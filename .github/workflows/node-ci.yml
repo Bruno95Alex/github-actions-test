@@ -1,17 +1,18 @@
-name: Node CI
+name: CI Workflow
 
 on:
-push:
+  push:
+    branches: [ "main" ]
 
 jobs:
-build:
-runs-on: ubuntu-latest
+  build:
+    runs-on: ubuntu-latest
 
-steps:
-  - uses: actions/checkout@v4
+    steps:
+      - uses: actions/checkout@v4
 
-  - name: Instalar dependências
-    run: npm install
+      - name: Instalar dependências
+        run: npm install
 
-  - name: Executar testes
-    run: npm test
+      - name: Executar testes
+        run: npm test
