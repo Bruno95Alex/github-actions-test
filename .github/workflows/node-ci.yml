@@ -9,7 +9,7 @@ on:
     - cron: '0 * * * *'
 
 jobs:
-  test-google/git:
+  test-firefox:
     runs-on: ubuntu-latest
 
     steps:
