@@ -1,50 +1,41 @@
-name: CI Workflow
+name: CI e Testes E2E Firefox
 
 on:
   push:
     branches: [ "main" ]
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Instalar dependências
-        run: npm install
-
-      - name: Executar testes
-        run: npm test
-
-
-name: Testes no Firefox
-
-on: [push, pull_request]
+  pull_request:
+    branches: [ "main" ]
 
 jobs:
   test-firefox:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: 'npm'
 
       - name: Instalar dependências
+        # npm ci é mais rápido e limpo para ambientes de CI que o npm install
         run: npm ci
 
-      - name: Instalar Firefox do Playwright
+      - name: Instalar Firefox e Dependências do Sistema
         run: npx playwright install --with-deps firefox
 
       - name: Rodar Testes no Firefox
+        # Garante que o Playwright use o projeto Firefox definido no config
         run: npx playwright test --project=firefox
 
-      - name: Upload da Evidência
+      - name: Upload da Evidência (Print)
         uses: actions/upload-artifact@v4
+        # O 'if: always()' garante que, mesmo se o teste falhar, o print seja enviado
         if: always()
         with:
-          name: print-firefox
+          name: print-resultado-google
           path: google-search.png
+          retention-days: 5
