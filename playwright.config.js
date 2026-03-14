@@ -1,13 +1,8 @@
+// playwright.config.js
 const { defineConfig, devices } = require('@playwright/test');
 
 module.exports = defineConfig({
-  testDir: './tests', // Onde seus testes estão guardados
-  fullyParallel: true,
-  reporter: 'html',
-  use: {
-    trace: 'on-first-retry',
-    screenshot: 'on',
-  },
+  testDir: './tests', // <--- Verifique se este nome bate com a sua pasta
   projects: [
     {
       name: 'firefox',
