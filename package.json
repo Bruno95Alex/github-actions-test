@@ -17,5 +17,8 @@
   "bugs": {
     "url": "https://github.com/Bruno95Alex/github-actions-test/issues"
   },
-  "homepage": "https://github.com/Bruno95Alex/github-actions-test#readme"
+  "homepage": "https://github.com/Bruno95Alex/github-actions-test#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.58.2"
+  }
 }

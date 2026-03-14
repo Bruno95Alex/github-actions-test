@@ -1,18 +1,49 @@
-name: CI Workflow
+# name: CI Workflow
 
-on:
-  push:
-    branches: [ "main" ]
+# on:
+#   push:
+#     branches: [ "main" ]
+
+# jobs:
+#   build:
+#     runs-on: ubuntu-latest
+
+#     steps:
+#       - uses: actions/checkout@v4
+
+#       - name: Instalar dependências
+#         run: npm install
+
+#       - name: Executar testes
+#         run: npm test
+
+name: Testes no Firefox
+
+on: [push, pull_request]
 
 jobs:
-  build:
+  test-firefox:
     runs-on: ubuntu-latest
-
+    
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
 
       - name: Instalar dependências
-        run: npm install
+        run: npm ci
 
-      - name: Executar testes
-        run: npm test
+      - name: Instalar Firefox do Playwright
+        run: npx playwright install --with-deps firefox
+
+      - name: Rodar Testes no Firefox
+        run: npx playwright test --project=firefox
+
+      - name: Upload da Evidência
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: print-firefox
+          path: google-search.png
