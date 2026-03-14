@@ -21,21 +21,21 @@ jobs:
           cache: 'npm'
 
       - name: Instalar dependências
-        # npm ci é mais rápido e limpo para ambientes de CI que o npm install
+      #Instalando dependencias
         run: npm ci
 
       - name: Instalar Firefox e Dependências do Sistema
         run: npx playwright install --with-deps firefox
 
       - name: Rodar Testes no Firefox
-        # Garante que o Playwright use o projeto Firefox definido no config
+        # O Playwright vai rodar todos os arquivos dentro da pasta /tests
         run: npx playwright test --project=firefox
 
-      - name: Upload da Evidência (Print)
+      - name: Upload das Evidências (Prints)
         uses: actions/upload-artifact@v4
-        # O 'if: always()' garante que, mesmo se o teste falhar, o print seja enviado
-        if: always()
+        if: always() # Garante que você terá os prints mesmo se o teste falhar
         with:
-          name: print-resultado-google
-          path: google-search.png
+          name: evidencias-testes
+          # Usamos um "pattern" (*.png) para pegar todos os prints gerados
+          path: ./*.png
           retention-days: 5
