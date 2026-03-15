@@ -1,50 +1,3 @@
-# name: CI e Testes E2E Firefox
-
-# on:
-#   push:
-#     branches: [ "main" ]
-#   pull_request:
-#     branches: [ "main" ]
-#   # schedule:
-#   #   - cron: '0 * * * *'
-
-# jobs:
-#   test-firefox:
-#     runs-on: ubuntu-latest
-
-#     steps:
-#       - name: Checkout do código
-#         uses: actions/checkout@v4
-
-#       - name: Configurar Node.js
-#         uses: actions/setup-node@v4
-#         with:
-#           node-version: 20
-#           cache: 'npm'
-
-#       - name: Instalar dependências
-#       #Instalando dependencias
-#         run: npm ci
-
-#       - name: Instalar Firefox e Dependências do Sistema
-#         run: npx playwright install --with-deps firefox
-
-#       - name: Rodar Testes no Firefox
-#         # O Playwright vai rodar todos os arquivos dentro da pasta /tests
-#         run: npx playwright test --project=firefox
-
-#       - name: Upload das Evidências (Prints)
-#         uses: actions/upload-artifact@v4
-#         if: always() # Garante que você terá os prints mesmo se o teste falhar
-#         with:
-#           name: evidencias-testes
-#           # Usamos um "pattern" (*.png) para pegar todos os prints gerados
-#           path: ./*.png
-#           retention-days: 5
-
-
-
-
 name: CI e Testes E2E Firefox
 
 on:
@@ -53,10 +6,14 @@ on:
   pull_request:
     branches: [ "main" ]
 
+# Permite que o workflow escreva os resultados e salve os artefatos
+permissions:
+  contents: read
+  actions: write
+
 jobs:
   test-firefox:
     runs-on: ubuntu-latest
-    # Dá até 10 minutos para o teste terminar (essencial para navegação e vídeos)
     timeout-minutes: 10
 
     steps:
@@ -72,20 +29,17 @@ jobs:
       - name: Instalar dependências
         run: npm ci
 
-      - name: Instalar Firefox e Dependências do Sistema
+      - name: Instalar Firefox e Dependências
         run: npx playwright install --with-deps firefox
 
       - name: Rodar Testes no Firefox
-        # Roda o teste que pesquisa no DuckDuckGo e clica no link
+        # Aqui o Playwright rodará o seu teste de E-commerce ou Busca
         run: npx playwright test --project=firefox
 
       - name: Upload das Evidências (Prints)
         uses: actions/upload-artifact@v4
-        # 'if: always()' é o mais importante: se o teste falhar no clique, 
-        # você ainda terá o print do erro para mostrar o porquê.
         if: always() 
         with:
           name: evidencias-testes
-          # Busca todos os arquivos PNG criados durante a execução
           path: "**/*.png"
           retention-days: 5
