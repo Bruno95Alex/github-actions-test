@@ -5,8 +5,9 @@ on:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
+  # schedule:
+ #   - cron: '0 * * * *'
 
-# Permite que o workflow escreva os resultados e salve os artefatos
 permissions:
   contents: read
   actions: write
@@ -33,7 +34,6 @@ jobs:
         run: npx playwright install --with-deps firefox
 
       - name: Rodar Testes no Firefox
-        # Aqui o Playwright rodará o seu teste de E-commerce ou Busca
         run: npx playwright test --project=firefox
 
       - name: Upload das Evidências (Prints)
